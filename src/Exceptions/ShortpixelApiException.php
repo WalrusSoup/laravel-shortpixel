@@ -34,6 +34,6 @@ class ShortpixelApiException extends Exception
             default => 'Unknown error.',
         };
 
-        return new static($message);
+        return new self($message);
     }
 }

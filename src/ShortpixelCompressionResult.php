@@ -237,11 +237,11 @@ class ShortpixelCompressionResult
      * Decodes the shortpixel reducer api response to a more usable form with some minor typing
      *
      * @param  array  $response
-     * @return static
+     * @return self
      */
-    public static function createFromResponse(array $response): static
+    public static function createFromResponse(array $response): self
     {
-        $result = new static();
+        $result = new self();
         if (! isset($response['Status'])) {
             if (isset($response['Code'])) {
                 $result->code = (int) $response['Code'];

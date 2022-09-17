@@ -125,9 +125,9 @@ class LaravelShortpixel
      * Creates an instance of this class with api key, plugin, and log channel set
      *
      * @param  array  $config
-     * @return static
+     * @return self
      */
-    public static function createFromConfig(array $config): static
+    public static function createFromConfig(array $config): self
     {
         $shortpixel = new self();
         $shortpixel->setApiKey($config['api_key']);

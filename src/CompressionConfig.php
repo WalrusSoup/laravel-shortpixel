@@ -2,6 +2,8 @@
 
 namespace WalrusSoup\LaravelShortpixel;
 
+use InvalidArgumentException;
+
 class CompressionConfig
 {
     protected const RESIZE_CONTAIN = 3;
@@ -187,6 +189,7 @@ class CompressionConfig
                 'png' => $this->convertToPng(),
                 'webp' => $this->convertToWebp(),
                 'avif' => $this->convertToAvif(),
+                default => throw new InvalidArgumentException('Invalid format provided'),
             };
         }
 
