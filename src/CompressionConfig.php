@@ -20,7 +20,7 @@ class CompressionConfig
 
     protected int $resizeHeight = 0;
 
-    protected bool $lossyMethod = true;
+    protected int $lossyMethod = 1;
 
     protected bool $forceRefresh = false;
 

@@ -260,23 +260,23 @@ class ShortpixelCompressionResult
         $result->losslessURL = $response['LosslessURL'] ?? null;
         $result->lossyURL = $response['LossyURL'] ?? null;
 
-        $result->webpLosslessURL = static::handleNaToString($response['WebPLosslessURL']);
-        $result->webpLossyURL = static::handleNaToString($response['WebPLossyURL']);
-        $result->avifLosslessURL = static::handleNaToString($response['AVIFLosslessURL']);
-        $result->avifLossyURL = static::handleNaToString($response['AVIFLossyURL']);
+        $result->webpLosslessURL = self::handleNaToString($response['WebPLosslessURL']);
+        $result->webpLossyURL = self::handleNaToString($response['WebPLossyURL']);
+        $result->avifLosslessURL = self::handleNaToString($response['AVIFLosslessURL']);
+        $result->avifLossyURL = self::handleNaToString($response['AVIFLossyURL']);
 
         /**
          * These can be NA or a string with a number in it, in bytes.
          */
-        $result->originalSize = static::handleNaToInt($response['OriginalSize']);
-        $result->losslessSize = static::handleNaToInt($response['LosslessSize']);
-        $result->loselessSize = static::handleNaToInt($response['LoselessSize']);
-        $result->lossySize = static::handleNaToInt($response['LossySize']);
-        $result->webPLosslessSize = static::handleNaToInt($response['WebPLosslessSize']);
-        $result->webPLoselessSize = static::handleNaToInt($response['WebPLoselessSize']);
-        $result->webPLossySize = static::handleNaToInt($response['WebPLossySize']);
-        $result->avifLosslessSize = static::handleNaToInt($response['AVIFLosslessSize']);
-        $result->avifLossySize = static::handleNaToInt($response['AVIFLossySize']);
+        $result->originalSize = self::handleNaToInt($response['OriginalSize']);
+        $result->losslessSize = self::handleNaToInt($response['LosslessSize']);
+        $result->loselessSize = self::handleNaToInt($response['LoselessSize']);
+        $result->lossySize = self::handleNaToInt($response['LossySize']);
+        $result->webPLosslessSize = self::handleNaToInt($response['WebPLosslessSize']);
+        $result->webPLoselessSize = self::handleNaToInt($response['WebPLoselessSize']);
+        $result->webPLossySize = self::handleNaToInt($response['WebPLossySize']);
+        $result->avifLosslessSize = self::handleNaToInt($response['AVIFLosslessSize']);
+        $result->avifLossySize = self::handleNaToInt($response['AVIFLossySize']);
 
         // This is not a unix timestamp but a date
         $result->timeStamp = $response['TimeStamp'];
