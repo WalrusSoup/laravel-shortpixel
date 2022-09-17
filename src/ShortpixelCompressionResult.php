@@ -2,33 +2,48 @@
 
 namespace WalrusSoup\LaravelShortpixel;
 
-use Exception;
 use WalrusSoup\LaravelShortpixel\Exceptions\ShortpixelApiException;
 
 class ShortpixelCompressionResult
 {
     public int $code;
+
     public string $message = '';
 
     public ?string $originalURL = null;
+
     public ?string $losslessURL = null;
+
     public ?string $lossyURL = null;
+
     public ?string $webpLosslessURL = null;
+
     public ?string $webpLossyURL = null;
+
     public ?string $avifLosslessURL = null;
+
     public ?string $avifLossyURL = null;
 
     public ?int $originalSize = null;
+
     public ?int $losslessSize = null;
+
     public ?int $loselessSize = null;
+
     public ?int $lossySize = null;
+
     public ?int $webPLosslessSize = null;
+
     public ?int $webPLoselessSize = null;
+
     public ?int $webPLossySize = null;
+
     public ?int $avifLosslessSize = null;
+
     public ?int $avifLossySize = null;
 
     public ?string $timeStamp = null;
+
     public ?string $percentImprovement = null;
 
     /**
@@ -97,7 +112,6 @@ class ShortpixelCompressionResult
     {
         return $this->losslessURL;
     }
-
 
     /**
      * Returns the URL of the lossy version of the image
@@ -176,7 +190,7 @@ class ShortpixelCompressionResult
      */
     public function getOriginalFilenameWithNewExtension(): string
     {
-        return $this->getOriginalClientNameWithoutExtension() . '.' . pathinfo($this->lossyURL, PATHINFO_EXTENSION);
+        return $this->getOriginalClientNameWithoutExtension().'.'.pathinfo($this->lossyURL, PATHINFO_EXTENSION);
     }
 
     /**
@@ -186,7 +200,7 @@ class ShortpixelCompressionResult
      */
     public function getOriginalFilenameAvifLossy(): string
     {
-        return $this->getOriginalClientNameWithoutExtension() . '.' . pathinfo($this->avifLossyURL, PATHINFO_EXTENSION);
+        return $this->getOriginalClientNameWithoutExtension().'.'.pathinfo($this->avifLossyURL, PATHINFO_EXTENSION);
     }
 
     /**
@@ -196,7 +210,7 @@ class ShortpixelCompressionResult
      */
     public function getOriginalFilenameAvifLossless(): string
     {
-        return $this->getOriginalClientNameWithoutExtension() . '.' . pathinfo($this->avifLosslessURL, PATHINFO_EXTENSION);
+        return $this->getOriginalClientNameWithoutExtension().'.'.pathinfo($this->avifLosslessURL, PATHINFO_EXTENSION);
     }
 
     /**
@@ -206,7 +220,7 @@ class ShortpixelCompressionResult
      */
     public function getOriginalFilenameWebpLossless(): string
     {
-        return $this->getOriginalClientNameWithoutExtension() . '.' . pathinfo($this->webpLosslessURL, PATHINFO_EXTENSION);
+        return $this->getOriginalClientNameWithoutExtension().'.'.pathinfo($this->webpLosslessURL, PATHINFO_EXTENSION);
     }
 
     /**
@@ -216,30 +230,30 @@ class ShortpixelCompressionResult
      */
     public function getOriginalFilenameWebpLossy(): string
     {
-        return $this->getOriginalClientNameWithoutExtension() . '.' . pathinfo($this->webpLossyURL, PATHINFO_EXTENSION);
+        return $this->getOriginalClientNameWithoutExtension().'.'.pathinfo($this->webpLossyURL, PATHINFO_EXTENSION);
     }
 
     /**
      * Decodes the shortpixel reducer api response to a more usable form with some minor typing
      *
-     * @param array $response
+     * @param  array  $response
      * @return static
      */
     public static function createFromResponse(array $response): static
     {
         $result = new static();
-        if(!isset($response['Status'])) {
-            if(isset($response['Code'])) {
-                $result->code = (int)$response['Code'];
+        if (! isset($response['Status'])) {
+            if (isset($response['Code'])) {
+                $result->code = (int) $response['Code'];
             }
-            if(isset($response['Message'])) {
-                $result->message = (string)$response['Message'];
+            if (isset($response['Message'])) {
+                $result->message = (string) $response['Message'];
             }
 
             return $result;
         }
 
-        $result->code = (int)$response['Status']['Code'];
+        $result->code = (int) $response['Status']['Code'];
         $result->message = $response['Status']['Message'];
 
         $result->originalURL = $response['OriginalURL'] ?? null;
@@ -274,8 +288,7 @@ class ShortpixelCompressionResult
     /**
      *  This is more of a helper, since I'm not sure what to do with these. We want null instead of an NA string in the response.
      *
-     * @param string $value
-     *
+     * @param  string  $value
      * @return string|null
      */
     private static function handleNaToString(string $value): ?string
@@ -291,6 +304,6 @@ class ShortpixelCompressionResult
      */
     private static function handleNaToInt($value): ?int
     {
-        return $value === 'NA' ? null : (int)$value;
+        return $value === 'NA' ? null : (int) $value;
     }
 }

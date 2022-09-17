@@ -8,7 +8,7 @@ class ShortpixelApiException extends Exception
 {
     public static function createFromApiResponse(int $statusCode)
     {
-        $message = match($statusCode) {
+        $message = match ($statusCode) {
             1 => 'No errors, image scheduled for processing.',
             2 => 'No errors, image processed, download URL available.',
             -102 => 'Invalid URL. Please make sure the URL is properly urlencoded and points to a valid image file.',

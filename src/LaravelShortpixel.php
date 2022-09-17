@@ -9,14 +9,15 @@ use Illuminate\Support\Str;
 class LaravelShortpixel
 {
     protected string $logChannel = 'default';
-    protected string $apiKey = '';
-    protected string $pluginVersion = '';
 
+    protected string $apiKey = '';
+
+    protected string $pluginVersion = '';
 
     /**
      * Use to set a compression log channel, which will be used to log compression events.
      *
-     * @param string $logChannel
+     * @param  string  $logChannel
      * @return void
      */
     public function setLogChannel(string $logChannel): void
@@ -27,7 +28,7 @@ class LaravelShortpixel
     /**
      * This is your API key. You can find it in your Shortpixel account.
      *
-     * @param string $apikey
+     * @param  string  $apikey
      * @return void
      */
     public function setApiKey(string $apikey): void
@@ -38,7 +39,7 @@ class LaravelShortpixel
     /**
      * This is required, maximum of 5 characters. Trimming it for sanity.
      *
-     * @param string $pluginVersion
+     * @param  string  $pluginVersion
      * @return void
      */
     public function setPluginVersion(string $pluginVersion): void
@@ -49,7 +50,7 @@ class LaravelShortpixel
     /**
      * This will call shortpixel and simply return the results. Call this later at your leisure with the same configuration to get results.
      *
-     * @param CompressionConfig $compressionConfig
+     * @param  CompressionConfig  $compressionConfig
      * @return array
      */
     public function callShortPixel(CompressionConfig $compressionConfig): array
@@ -60,29 +61,31 @@ class LaravelShortpixel
     /**
      * Call shortpixel and let this class wait for a response. This is intended to run within a job, not a regular http request.
      *
-     * @param CompressionConfig $compressionConfig
-     * @param int $maximumAttempts
-     * @param int $sleepFor
+     * @param  CompressionConfig  $compressionConfig
+     * @param  int  $maximumAttempts
+     * @param  int  $sleepFor
      * @return array
      */
     public function callShortPixelAndWait(CompressionConfig $compressionConfig, int $maximumAttempts = 10, int $sleepFor = 10): array
     {
         $currentAttempt = 0;
         $compressionPayload = $compressionConfig->getPayload($this->apiKey, $this->pluginVersion);
-        Log::channel($this->logChannel)->info('Calling ShortPixel API With Configuration: ' . json_encode(array_merge(['apikey' => ''], $compressionPayload)));
+        Log::channel($this->logChannel)->info('Calling ShortPixel API With Configuration: '.json_encode(array_merge(['apikey' => ''], $compressionPayload)));
 
-        while($currentAttempt < $maximumAttempts) {
+        while ($currentAttempt < $maximumAttempts) {
             $currentAttempt++;
             $shortpixelResponse = $this->makeHttpCall($compressionPayload);
             $compressionResults = $this->handleShortpixelResponse($shortpixelResponse);
 
-            foreach($compressionResults as $compressionResult) {
+            foreach ($compressionResults as $compressionResult) {
                 if ($compressionResult->isProcessing()) {
-                    Log::channel($this->logChannel)->info('Not all images ready, sleeping for ' . $sleepFor . ' seconds');
+                    Log::channel($this->logChannel)->info('Not all images ready, sleeping for '.$sleepFor.' seconds');
+
                     continue 2;
                 }
             }
             Log::channel($this->logChannel)->info('All images ready, returning results');
+
             return $compressionResults;
         }
         // This would be an odd case. What happened?
@@ -92,14 +95,14 @@ class LaravelShortpixel
     /**
      * Converts all shortpixel responses into a collection of ShortpixelResponse objects.
      *
-     * @param array $compressionResponse
+     * @param  array  $compressionResponse
      * @return array
      */
     public function handleShortpixelResponse(array $compressionResponse): array
     {
         $compressionResults = [];
 
-        foreach($compressionResponse as $imageResponse) {
+        foreach ($compressionResponse as $imageResponse) {
             $compressionResult = ShortpixelCompressionResult::createFromResponse($imageResponse);
             $compressionResults[] = $compressionResult;
         }
@@ -110,7 +113,7 @@ class LaravelShortpixel
     /**
      * Performs the HTTP call using laravels built-in http client.
      *
-     * @param array $payload
+     * @param  array  $payload
      * @return array|mixed
      */
     protected function makeHttpCall(array $payload)
@@ -121,7 +124,7 @@ class LaravelShortpixel
     /**
      * Creates an instance of this class with api key, plugin, and log channel set
      *
-     * @param array $config
+     * @param  array  $config
      * @return static
      */
     public static function createFromConfig(array $config): static

@@ -5,28 +5,41 @@ namespace WalrusSoup\LaravelShortpixel;
 class CompressionConfig
 {
     protected const RESIZE_CONTAIN = 3;
+
     protected const RESIZE_COVER = 1;
 
     protected const COMPRESSION_LOSSY = 1;
+
     protected const COMPRESSION_GLOSSY = 2;
+
     protected const COMPRESSION_LOSSLESS = 0;
 
     protected int $resizeMethod = 0;
+
     protected int $resizeWidth = 0;
+
     protected int $resizeHeight = 0;
 
     protected bool $lossyMethod = true;
+
     protected bool $forceRefresh = false;
+
     protected bool $keepExif = false;
 
     protected bool $retainOriginalFormat = false;
+
     protected bool $convertToWebp = false;
+
     protected bool $convertToJpg = false;
+
     protected bool $convertToPng = false;
+
     protected bool $convertToAvif = false;
+
     protected bool $convertToRgb = true;
 
     public array $images = [];
+
     public array $metadata = [];
 
     public function addImages(array $images): static
@@ -76,8 +89,7 @@ class CompressionConfig
     /**
      * Whether we should force shortpixel to reprocess this image
      *
-     * @param bool $forceReprocessing this will tell shortpixel to reprocess the image again, even if the image configuration is the same
-     *
+     * @param  bool  $forceReprocessing this will tell shortpixel to reprocess the image again, even if the image configuration is the same
      * @return $this
      */
     public function forceReprocessing(bool $forceReprocessing): static
@@ -114,7 +126,6 @@ class CompressionConfig
 
         return $this;
     }
-
 
     public function convertToJpeg(bool $convertToJpg = true): static
     {
@@ -168,10 +179,9 @@ class CompressionConfig
         return $this->metadata;
     }
 
-
     public function convertToFormats(array $formats): static
     {
-        foreach($formats as $format) {
+        foreach ($formats as $format) {
             match ($format) {
                 'jpg', 'jpeg' => $this->convertToJpeg(),
                 'png' => $this->convertToPng(),
@@ -179,23 +189,24 @@ class CompressionConfig
                 'avif' => $this->convertToAvif(),
             };
         }
+
         return $this;
     }
 
-    public function getOutputFormats() : array
+    public function getOutputFormats(): array
     {
         $formats = [];
-        if($this->convertToJpg) {
+        if ($this->convertToJpg) {
             $formats[] = 'jpg';
         }
-        if($this->convertToPng) {
+        if ($this->convertToPng) {
             $formats[] = 'png';
         }
-        if($this->convertToWebp) {
+        if ($this->convertToWebp) {
             $formats[] = $this->retainOriginalFormat ? '+webp' : 'webp';
         }
-        if($this->convertToAvif) {
-            $formats[] =  $this->retainOriginalFormat ? '+avif' : 'avif';
+        if ($this->convertToAvif) {
+            $formats[] = $this->retainOriginalFormat ? '+avif' : 'avif';
         }
 
         return $formats;
@@ -206,19 +217,19 @@ class CompressionConfig
         $shortpixelConfiguration = [
             'key' => $apikey,
             'lossy' => $this->lossyMethod,
-            'keep_exif' => (int)$this->keepExif,
-            'cmyk2rgb' => (int)$this->convertToRgb,
+            'keep_exif' => (int) $this->keepExif,
+            'cmyk2rgb' => (int) $this->convertToRgb,
             'resize' => $this->resizeMethod,
             'convertto' => implode('|', $this->getOutputFormats()),
             'urllist' => $this->images,
         ];
 
-        if($this->resizeMethod !== 0) {
+        if ($this->resizeMethod !== 0) {
             $shortpixelConfiguration['resize_width'] = $this->resizeWidth;
             $shortpixelConfiguration['resize_height'] = $this->resizeHeight;
         }
 
-        if($this->forceRefresh) {
+        if ($this->forceRefresh) {
             $shortpixelConfiguration['refresh'] = 1;
         }
 
