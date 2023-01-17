@@ -80,7 +80,8 @@ class LaravelShortpixel
             foreach ($compressionResults as $compressionResult) {
                 if ($compressionResult->isProcessing()) {
                     Log::channel($this->logChannel)->info('Not all images ready, sleeping for '.$sleepFor.' seconds');
-
+                    sleep($sleepFor);
+                    
                     continue 2;
                 }
             }
