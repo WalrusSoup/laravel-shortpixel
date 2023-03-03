@@ -7,6 +7,9 @@
 
 Makes using the shortpixel reducer api with laravel slightly less painful.
 
+## Archiving
+Archiving this to move to BunnyCDN. It's cheaper, and their API for using the on the fly image optimization is only $9.99 a month - literally cannot beat those prices. 
+
 ## Installation
 
 You can install the package via composer:
